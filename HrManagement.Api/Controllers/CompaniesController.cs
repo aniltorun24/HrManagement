@@ -21,5 +21,32 @@ namespace HrManagement.Api.Controllers
 
             return StatusCode(StatusCodes.Status201Created, result);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _companyService.GetAllAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await _companyService.GetByIdAsync(id);
+            return Ok(result);
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update(Guid id, UpdateCompanyAsync request)
+        {
+            var result = await _companyService.UpdateAsync(id, request);
+            return Ok(result);
+
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _companyService.DeleteAsync(id);
+            return Ok(result);
+
+        }
     }
 }

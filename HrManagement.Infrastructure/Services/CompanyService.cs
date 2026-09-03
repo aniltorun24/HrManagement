@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace HrManagement.Infrastructure.Services
 {
@@ -40,6 +41,75 @@ namespace HrManagement.Infrastructure.Services
             _context.Companies.Add(company);
             await _context.SaveChangesAsync();
             return company.Id;
+        }
+
+        public Task<bool> DeleteAsync(Guid id)
+        {
+            var existCompany = _context.Companies.FirstOrDefault(x => x.Id == id);
+
+            if (existCompany != null)
+            {
+                _context.Companies.Remove(existCompany);
+                _context.SaveChanges();
+                return Task.FromResult(true);
+            }
+
+            else
+            {
+                throw new InvalidOperationException("Company not found");
+            }
+        }
+
+        public Task<List<CompanyResponse>> GetAllAsync()
+        {
+            var existingCompanies = _context.Companies
+                .Select(x => new CompanyResponse
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    CreatedAt = x.CreatedAt,
+                    IsActive = x.IsActive
+                })
+                .ToListAsync();
+
+            return existingCompanies;
+        }
+
+        public async Task<CompanyResponse> GetByIdAsync(Guid id)
+        {
+            var existCompany = await _context.Companies.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existCompany == null)
+            {
+                throw new InvalidOperationException("Company not found");
+            }
+
+            return new CompanyResponse
+            {
+                Id = existCompany.Id,
+                Name = existCompany.Name,
+                CreatedAt = existCompany.CreatedAt,
+                IsActive = existCompany.IsActive
+            };
+
+            
+        }
+
+        public async Task<bool> UpdateAsync(Guid id, UpdateCompanyAsync request)
+        {
+            var existCompany = await _context.Companies.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existCompany == null)
+            {
+                throw new InvalidOperationException("Company not found");
+            }
+
+            existCompany.Name = request.Name;
+            existCompany.IsActive = request.IsActive;
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

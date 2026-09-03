@@ -9,5 +9,13 @@ namespace HrManagement.Application.Companies
     public interface ICompanyService 
     {
         Task<Guid> CreateAsync(CreateCompanyRequest request);
+
+        Task<List<CompanyResponse>> GetAllAsync();
+
+        Task<CompanyResponse> GetByIdAsync(Guid id);
+
+        Task<bool> UpdateAsync(Guid id, UpdateCompanyAsync request);
+
+        Task<bool> DeleteAsync(Guid id);
     }
 }
