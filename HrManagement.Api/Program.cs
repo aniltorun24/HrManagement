@@ -1,4 +1,5 @@
 using HrManagement.Application.Companies;
+using HrManagement.Application.Departments;
 using HrManagement.Infrastructure.Persistence;
 using HrManagement.Infrastructure.Persistence.Seed;
 using HrManagement.Infrastructure.Services;
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
 var app = builder.Build();
 

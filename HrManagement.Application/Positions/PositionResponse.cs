@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HrManagement.Application.Departments
+namespace HrManagement.Application.Positions
 {
-    public class DepartmentResponse
+    public class PositionResponse
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public Guid CompanyId { get; set; }
+        public string Title { get; set; }
+        
         public DateTime CreatedAt { get; set; }
         public bool IsActive { get; set; }
     }
