@@ -29,6 +29,9 @@ namespace HrManagement.Infrastructure.Persistence.Configurations
                .IsRequired()
                .HasMaxLength(250);
 
+            builder.HasIndex(x => x.Email)
+                .IsUnique();
+
             builder.Property(x => x.Phone)
                .HasMaxLength(30);
 

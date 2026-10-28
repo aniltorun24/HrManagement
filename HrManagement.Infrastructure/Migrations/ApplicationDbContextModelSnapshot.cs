@@ -41,6 +41,9 @@ namespace HrManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Companies", (string)null);
                 });
 
@@ -109,6 +112,9 @@ namespace HrManagement.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("PositionId");
 
@@ -182,10 +188,7 @@ namespace HrManagement.Infrastructure.Migrations
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("EmpoyeeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastLoginAt")
+                    b.Property<DateTime?>("LastLoginAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("PasswordHash")

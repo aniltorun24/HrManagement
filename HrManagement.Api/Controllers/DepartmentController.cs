@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HrManagement.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/departments")]
     public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
@@ -21,7 +21,7 @@ namespace HrManagement.Api.Controllers
             return Ok(departments);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var department = await _departmentService.GetByIdAsync(id);
@@ -35,14 +35,14 @@ namespace HrManagement.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, departmentId);
         }
 
-        [HttpPut]
+        [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdateDepartmentRequest request)
         {
             var result = await _departmentService.UpdateAsync(id, request);
             return Ok(result);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var result = await _departmentService.DeleteAsync(id);

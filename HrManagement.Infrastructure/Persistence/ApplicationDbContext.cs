@@ -19,8 +19,8 @@ namespace HrManagement.Infrastructure.Persistence
         public DbSet<Company> Companies { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Position> Positions { get; set; }
-        public DbSet<Employee> Employeess { get; set; }
-        public DbSet<UserAccount> UserAccount { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<UserAccount> UserAccounts { get; set; }
         public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

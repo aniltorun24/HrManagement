@@ -1,4 +1,5 @@
 ﻿using HrManagement.Application.Companies;
+using HrManagement.Application.Common.Exceptions;
 using HrManagement.Domain.Entities;
 using HrManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,7 @@ namespace HrManagement.Infrastructure.Services
 
             if (exists)
             {
-                // burada exception veya uygun bir hata sonucu döndür
+                throw new ConflictException("Company name already exists");
             }
 
             var company = new 
@@ -43,20 +44,20 @@ namespace HrManagement.Infrastructure.Services
             return company.Id;
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            var existCompany = _context.Companies.FirstOrDefault(x => x.Id == id);
+            var existCompany = await _context.Companies.FirstOrDefaultAsync(x => x.Id == id);
 
             if (existCompany != null)
             {
                 _context.Companies.Remove(existCompany);
-                _context.SaveChanges();
-                return Task.FromResult(true);
+                await _context.SaveChangesAsync();
+                return true;
             }
 
             else
             {
-                throw new InvalidOperationException("Company not found");
+                throw new NotFoundException("Company not found");
             }
         }
 
@@ -81,7 +82,7 @@ namespace HrManagement.Infrastructure.Services
 
             if (existCompany == null)
             {
-                throw new InvalidOperationException("Company not found");
+                throw new NotFoundException("Company not found");
             }
 
             return new CompanyResponse
@@ -101,7 +102,7 @@ namespace HrManagement.Infrastructure.Services
 
             if (existCompany == null)
             {
-                throw new InvalidOperationException("Company not found");
+                throw new NotFoundException("Company not found");
             }
 
             existCompany.Name = request.Name;

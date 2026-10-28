@@ -11,10 +11,9 @@ namespace HrManagement.Domain.Entities
     public class UserAccount
     {
         public Guid Id { get; set; }
-        public Guid EmpoyeeId { get; set; }
         public string? PasswordHash { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime LastLoginAt { get; set; }
+        public DateTime? LastLoginAt { get; set; }
         public bool EmailVerified { get; set; }
         public UserAccountStatus Status { get; set; }
         public Guid RoleId { get; set; }

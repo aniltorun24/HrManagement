@@ -10,7 +10,7 @@ namespace HrManagement.Application.Companies
     public class CreateCompanyRequest 
     {
         [Required]
-        [MaxLength(200)]
+        [StringLength(200, MinimumLength = 2)]
         public string Name { get; set; } = string.Empty;
     }
 }

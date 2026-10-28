@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HrManagement.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/companies")]
     public class CompaniesController : Controller
     {
         private readonly ICompanyService _companyService;
@@ -28,20 +28,20 @@ namespace HrManagement.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var result = await _companyService.GetByIdAsync(id);
             return Ok(result);
         }
-        [HttpPut]
+        [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, UpdateCompanyAsync request)
         {
             var result = await _companyService.UpdateAsync(id, request);
             return Ok(result);
 
         }
-        [HttpDelete]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _companyService.DeleteAsync(id);

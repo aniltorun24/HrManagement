@@ -1,4 +1,5 @@
 ﻿using HrManagement.Application.Departments;
+using HrManagement.Application.Common.Exceptions;
 using HrManagement.Domain.Entities;
 using HrManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace HrManagement.Infrastructure.Services
 
             if (!ExistCompanyId)
             {
-                throw new Exception("Company not found");
+                throw new NotFoundException("Company not found");
             }
 
             var department = new Department
@@ -37,7 +38,7 @@ namespace HrManagement.Infrastructure.Services
                 IsActive = true
             };
 
-            _context.Departments.AddAsync(department);
+            await _context.Departments.AddAsync(department);
             await _context.SaveChangesAsync();
 
             return department.Id;
@@ -49,7 +50,7 @@ namespace HrManagement.Infrastructure.Services
 
             if (department is null)
             {
-                throw new Exception("Department not found");
+                throw new NotFoundException("Department not found");
             }
 
             _context.Departments.Remove(department);
@@ -77,7 +78,7 @@ namespace HrManagement.Infrastructure.Services
 
             if (department == null)
             {
-                throw new Exception("Department not found");
+                throw new NotFoundException("Department not found");
             }
 
             return new DepartmentResponse
@@ -91,19 +92,16 @@ namespace HrManagement.Infrastructure.Services
 
         public async Task<bool> UpdateAsync(Guid id, UpdateDepartmentRequest request)
         {
-            var exist = await _context.Departments.AnyAsync(x => x.Id == id);
-            if (!exist)
+            var department = await _context.Departments.FirstOrDefaultAsync(x => x.Id == id);
+            if (department is null)
             {
-                throw new Exception("Department not found");
+                throw new NotFoundException("Department not found");
             }
-            else
-            {
-                var department = await _context.Departments.FirstOrDefaultAsync(x => x.Id == id);
-                department.Name = request.Name;
-                department.IsActive = request.IsActive;
-                await _context.SaveChangesAsync();
-                return true;
-            }
+
+            department.Name = request.Name;
+            department.IsActive = request.IsActive;
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
